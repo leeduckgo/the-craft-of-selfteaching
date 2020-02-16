@@ -1,0 +1,75 @@
+<html>
+<head>
+<title>Guess</title>
+</head>
+<body>
+    <div id="log"></div>
+    <script>
+
+var coin_user = 10
+        var coin_bot = 10
+        var round_of_games = 0;
+        ele = document.getElementById("log");
+        
+        function bet(dice, wager){ // 接收两个参数，一个是骰子点数，另一个用户的输入
+            if(dice==7){
+                res = 0
+                alert("The dice is " + dice + ";\nDRAW!\n" //\n 是换行符号
+                 + "THE BALANCE: You: " + (coin_user + res) + " BOT: " + (coin_bot-res)) 
+                return res
+            }else if(dice < 7){
+                if(wager=="s"){
+                    res = 1
+                    alert("The dice is " + dice + ";\nYou WIN!\n"
+                    + "THE BALANCE: You: " + (coin_user + res) + " BOT: " + (coin_bot-res))
+                }else{
+                    res = -1
+                    alert("The dice is " + dice + ";\nYou LOST!\n"
+                    + "THE BALANCE: You: " + (coin_user + res) + " BOT: " + (coin_bot-res))
+                    
+                }
+            }else{
+                if(wager=="s"){
+                    res = -1
+                    alert("The dice is " + dice + ";\nYou LOST!\n"
+                    + "THE BALANCE: You: " + (coin_user + res) + " BOT: " + (coin_bot-res))
+                }else{
+                    res = 1
+                    alert("The dice is " + dice + ";\nYou WIN!\n"
+                    + "THE BALANCE: You: " + (coin_user + res) + " BOT: " + (coin_bot-res))
+                }
+            }
+            return res
+        }
+        while (true) { //除 for 之外的另外一个循环语句
+            var wager = prompt("输入 s 猜小，输入 b 猜大，输入 q 退出：");
+            if(wager == "b" || wager == "s"){ //只有当用户输入的是 b 或者 s 得时候，才“掷骰子”……
+                /*
+                    Javascript 并没有函数用以生成随机整数，解决方案就是生成[0-1]之间的一个小数后乘以相应的倍数后取整。
+                    套用这个公式可以生成[a, b]内的随机整数：
+                    Math.round(Math.random() * (b-a) ) + a
+                */
+                dice = Math.round(Math.random() * 10 ) + 2;
+                result = bet(dice, wager, coin_user, coin_bot);
+                coin_user += result;
+                coin_bot -= result;
+                round_of_games += 1;
+                if(coin_user==0){
+                    alert("Woops, you've LOST ALL, and game over!\nYou've played "+
+                    round_of_games + " rounds.You have" + coin_user +"coins now.\nBye!");
+                    break;
+                }else if(coin_bot==0){
+                    alert("Woops, the robot's LOST ALL, and game over!\nYou've played "+
+                    round_of_games + " rounds.You have" + coin_user +"coins now.\nBye!");
+                    break;
+                }
+            }else if (wager == "q"){ //输入 q 退出
+                alert("记得明天再来玩哦~");
+                break;
+            }else{ //其它的则提出错误后执行下一次循环！
+                alert("输入错误，请重新输入！");
+            }
+        }
+    </script>
+</body>
+</html>
